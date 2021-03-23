@@ -1,4 +1,5 @@
 import ComponentBuilder from "./components.js";
+import { constants } from "./constants.js";
 
 export default class TerminalController {
   #userColors = new Map();
@@ -47,9 +48,25 @@ export default class TerminalController {
     }
   }
 
+  #onStatusChange({ screen, status }) {
+    return users => {
+      const { content } = status.items.shift();
+      status.clearItems();
+      status.addItem(content);
+
+      users.forEach(userName => {
+        const color = this.#getUserColor(userName);
+        status.addItem(`{${color}}{bold}${userName}`);
+      });
+
+      screen.render();
+    }
+  }
+
   #registerEvents(eventEmitter, component) {
-    eventEmitter.on('message:received', this.#onMessageReceived(component));
-    eventEmitter.on('message:updated', this.#onLogChange(component));
+    eventEmitter.on(constants.events.app.MESSAGE_RECEIVED, this.#onMessageReceived(component));
+    eventEmitter.on(constants.events.app.ACTIVITYLOG_UPDATE, this.#onLogChange(component));
+    eventEmitter.on(constants.events.app.STATUS_UPDATE, this.#onStatusChange(component));
   }
 
   initializeTable(eventEmitter) {
@@ -67,16 +84,27 @@ export default class TerminalController {
     componentBuilder.input.focus();
     componentBuilder.screen.render();
 
-    setInterval(() => {
-      eventEmitter.emit('message:updated', 'Diego join');
-      eventEmitter.emit('message:updated', 'Seila join');
-      eventEmitter.emit('message:received', { userName: 'Diego', message: 'hello world'});
+    // const users = ['Diego'];
+    // eventEmitter.emit(constants.events.app.STATUS_UPDATE, users);
+
+    // setTimeout(async() => {
+    //   const delay = t => new Promise(r => setTimeout(r, t * 1000));
+
+    //   users.push('Maria');
+    //   eventEmitter.emit(constants.events.app.STATUS_UPDATE, users);
+    //   await delay(1);
+
+    //   users.push('Tesla');
+    //   eventEmitter.emit(constants.events.app.STATUS_UPDATE, users);
+    //   await delay(0.3);
+
+    //   users.push('Troll1');
+    //   eventEmitter.emit(constants.events.app.STATUS_UPDATE, users);
+    //   await delay(3);
       
-      eventEmitter.emit('message:received', { userName: 'Seila', message: 'Oi'});
-      eventEmitter.emit('message:updated', 'Jaquan join');
-      eventEmitter.emit('message:received', { userName: 'Jaquan', message: 'consequatur'});
-      eventEmitter.emit('message:updated', 'Diego left');
-      //eventEmitter.emit('message:received', { userName: 'Davon', message: 'facilis iste explicabo'});
-    }, 1000)
+    //   users.push('Teste');
+    //   eventEmitter.emit(constants.events.app.STATUS_UPDATE, users);
+    //   users.push('Seila');
+    // }, 1000);    
   }
 }
