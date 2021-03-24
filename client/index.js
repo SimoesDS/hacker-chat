@@ -1,7 +1,14 @@
 import Events from 'events';
+import CliConfig from './cliConfig.js';
+import SocketClient from './src/socket.js';
 import TerminalController from './src/terminalController.js';
 
-const componentEmitter = new Events();
+const [,, ...commands] = process.argv;
+const cliConfig = CliConfig.parseArguments(commands);
 
-const terminalController = new TerminalController();
-await terminalController.initializeTable(componentEmitter);
+const componentEmitter = new Events();
+const socketClient = new SocketClient(cliConfig)
+await socketClient.initialize();
+
+// const terminalController = new TerminalController();
+// await terminalController.initializeTable(componentEmitter);
