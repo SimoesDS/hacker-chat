@@ -10,37 +10,37 @@ export default class TerminalController {
     return `#${((1 << 24) * Math.random() | 0).toString(16)}-fg`
   }
 
-  #getUserColor(userName) {
-    if(this.#userColors.get(userName))
-      return this.#userColors.get(userName);
+  #getUserColor(username) {
+    if(this.#userColors.get(username))
+      return this.#userColors.get(username);
 
     const randomColor = this.pickRandomColor();
-    this.#userColors.set(userName, randomColor);
+    this.#userColors.set(username, randomColor);
 
     return randomColor;
   }
 
-  #onInputReceived() {
+  #onInputReceived(eventEmitter) {
     return function() {
       const message = this.getValue();
-      console.log(message);
+      eventEmitter.emit(constants.events.app.MESSAGE_SENT, message);
       this.clearValue();
     }
   }
 
   #onMessageReceived({ screen, chat }) {
     return msg => {
-      const { userName, message } = msg;
-      const color = this.#getUserColor(userName);
-      chat.addItem(`{${color}}{bold}${userName}{/}: ${message}`);
+      const { username, message } = msg;
+      const color = this.#getUserColor(username);
+      chat.addItem(`{${color}}{bold}${username}{/}: ${message}`);
       screen.render();
     }
   }
 
   #onLogChange({ screen, activityLog }) {
     return msg => {
-      const [ userName ] = msg.split(/\s/);
-      const color = this.#getUserColor(userName);
+      const [ username ] = msg.split(/\s/);
+      const color = this.#getUserColor(username);
 
 
       activityLog.addItem(`{${color}}{bold}${msg.toString()}{/}`);
@@ -54,9 +54,9 @@ export default class TerminalController {
       status.clearItems();
       status.addItem(content);
 
-      users.forEach(userName => {
-        const color = this.#getUserColor(userName);
-        status.addItem(`{${color}}{bold}${userName}`);
+      users.forEach(username => {
+        const color = this.#getUserColor(username);
+        status.addItem(`{${color}}{bold}${username}`);
       });
 
       screen.render();

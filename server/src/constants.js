@@ -5,4 +5,8 @@ export const constants = {
     DISCONNECT_USER: 'disconnectUser',
     UPDATE_USERS: 'updateUsers',
   },
+  socket: {
+    JOIN_ROOM: 'joinRoom',
+    MESSAGE: 'message',
+  },
 }
