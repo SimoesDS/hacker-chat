@@ -3,8 +3,8 @@ export const constants = {
     app: {
       MESSAGE_SENT: 'message:sent',
       MESSAGE_RECEIVED: 'message:received',
-      ACTIVITYLOG_UPDATE: 'activity:update',
-      STATUS_UPDATE: 'status:update',
+      ACTIVITYLOG_UPDATED: 'activity:update',
+      STATUS_UPDATED: 'status:update',
     },
     
     socket: {

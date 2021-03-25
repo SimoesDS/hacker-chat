@@ -1,5 +1,5 @@
-import ComponentBuilder from "./components.js";
-import { constants } from "./constants.js";
+import ComponentBuilder from './components.js';
+import { constants } from './constants.js';
 
 export default class TerminalController {
   #userColors = new Map();
@@ -7,7 +7,7 @@ export default class TerminalController {
   constructor() {}
 
   pickRandomColor() {
-    return `#${((1 << 24) * Math.random() | 0).toString(16)}-fg`
+    return `#${((1 << 24) * Math.random() | 0).toString(16).padStart(6, '0')}-fg`;
   }
 
   #getUserColor(username) {
@@ -65,8 +65,8 @@ export default class TerminalController {
 
   #registerEvents(eventEmitter, component) {
     eventEmitter.on(constants.events.app.MESSAGE_RECEIVED, this.#onMessageReceived(component));
-    eventEmitter.on(constants.events.app.ACTIVITYLOG_UPDATE, this.#onLogChange(component));
-    eventEmitter.on(constants.events.app.STATUS_UPDATE, this.#onStatusChange(component));
+    eventEmitter.on(constants.events.app.ACTIVITYLOG_UPDATED, this.#onLogChange(component));
+    eventEmitter.on(constants.events.app.STATUS_UPDATED, this.#onStatusChange(component));
   }
 
   initializeTable(eventEmitter) {
