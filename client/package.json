@@ -8,6 +8,8 @@
     "user01": "node index.js --username Fulado01 --room sala01 --host http://localhost:9898",
     "user02": "node index.js --username SimoesDS --room sala01 --host http://localhost:9898",
     "user03": "node index.js --username Russel --room sala01 --host http://localhost:9898",
+    "user04": "node index.js --username Dayana --room sala02 --host http://localhost:9898",
+    "user05": "node index.js --username Jennifer --room sala02 --host http://localhost:9898",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -7,6 +7,7 @@ export default class TerminalController {
   constructor() {}
 
   pickRandomColor() {
+    // TODO: As vezes é gerado uma cor muito parecida com as que ja existem
     return `#${((1 << 24) * Math.random() | 0).toString(16).padStart(6, '0')}-fg`;
   }
 
