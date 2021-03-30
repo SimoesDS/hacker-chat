@@ -8,7 +8,12 @@ export default class TerminalController {
 
   pickRandomColor() {
     // TODO: As vezes é gerado uma cor muito parecida com as que ja existem
-    return `#${((1 << 24) * Math.random() | 0).toString(16).padStart(6, '0')}-fg`;
+    const randomValue = _ => Math.floor(Math.random() * 25 * 20).toString(16).padStart(2, '0');
+    const red = randomValue();
+    const green = randomValue();
+    const blue = randomValue();
+    const color = `#${red}${green}${blue}-fg`; 
+    return color;
   }
 
   #getUserColor(username) {
